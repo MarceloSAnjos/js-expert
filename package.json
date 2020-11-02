@@ -1,0 +1,20 @@
+{
+  "name": "js-expert",
+  "version": "1.0.0",
+  "description": "A project based in Netflix Bandersnatch for learning avanced Javascript",
+  "main": "index.js",
+  "scripts": {
+   "assets": "npx http-server --cors -p 8081 assets/",
+   "dev": "npx http-server --cors -p 8080 public/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git"
+  },
+  "author": "Marcelo dos Anjos",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "http-server": "^0.12.3"
+  }
+}
