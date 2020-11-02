@@ -4,7 +4,6 @@ class Network {
   }
 
   parseManifestUrl({ url, fileResolution, fileResolutionTag, hostTag }) {
-    console.log("hostTag", this.host);
     return url
       .replace(fileResolutionTag, fileResolution)
       .replace(hostTag, this.host);
@@ -13,5 +12,34 @@ class Network {
   async fetchFile(url) {
     const response = await fetch(url);
     return response.arrayBuffer();
+  }
+
+  async getProperResolution(url) {
+    const startMs = Date.now();
+    const response = await fetch(url);
+    await response.arrayBuffer();
+    const endMs = Date.now();
+    const durationInMs = endMs - startMs;
+    console.log("durationInMs", durationInMs);
+
+    //ao invés de calcular o througput vamos calular pelo tempo
+    const resolutions = [
+      //pior cenário possivel. 20 segundos
+      { start: 3001, end: 20000, resolution: 144 },
+      //até 3 segundos
+      { start: 901, end: 3000, resolution: 360 },
+      //menos de 1 segundo
+      { start: 0, end: 900, resolution: 720 },
+    ];
+
+    const item = resolutions.find((item) => {
+      return item.start <= durationInMs && item.end >= durationInMs;
+    });
+    console.log("item", item);
+    const LOWEST_RESOLUTION = 144;
+    //se form mais de 30s
+    if (!item) return LOWEST_RESOLUTION;
+
+    return item.resolution;
   }
 }
